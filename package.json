@@ -1,0 +1,56 @@
+{
+  "name": "gameguard-client",
+  "version": "0.4.3",
+  "description": "The client-side companion to GameGuard",
+  "scripts": {
+    "tsconfig": "tsc --init --declaration --allowSyntheticDefaultImports --target esnext --outDir lib",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
+    "build": "npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
+    "bundle": "rollup -c",
+    "bundle:watch": "rollup -c --watch",
+    "test": "node test/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robertcorponoi/gameguard-client"
+  },
+  "keywords": [
+    "game",
+    "gameguard",
+    "client",
+    "server",
+    "player",
+    "players",
+    "websocket",
+    "websockets"
+  ],
+  "typings": "lib/index.d.ts",
+  "author": "Robert Corponoi",
+  "license": "MIT",
+  "module": "gameguard-client.js",
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-numeric-separator": "^7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-typescript": "^7.7.7",
+    "chai": "^4.2.0",
+    "fastify": "^2.11.0",
+    "fastify-static": "^2.5.1",
+    "gameguard": "^0.4.3",
+    "mocha": "^7.0.0",
+    "rollup": "^1.29.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "eventverse": "^1.0.6"
+  }
+}
