@@ -75,7 +75,7 @@ export default class GameGuardClient extends Eventverse {
   private _onOpen() {
     const playerId: string = this._clientData.getPlayerId();
 
-    const message: Message = new Message('player-joined', playerId);
+    const message: Message = new Message('player-connected', playerId);
 
     this._socket.send(message.stringify());
 

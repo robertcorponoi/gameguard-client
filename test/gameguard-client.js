@@ -753,7 +753,7 @@ function (_Eventverse) {
     value: function _onOpen() {
       var playerId = this._clientData.getPlayerId();
 
-      var message = new Message('player-joined', playerId);
+      var message = new Message('player-connected', playerId);
 
       this._socket.send(message.stringify()); // @ts-ignore
 

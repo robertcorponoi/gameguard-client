@@ -25,7 +25,21 @@
 
   <script>mocha.setup('bdd')</script>
 
-  <script type="module" src="./gameguard.client.test.js"></script>
+  <!--  <script type="module" src="./gameguard.client.test.js"></script>-->
+
+  <script type="module">
+    import GameGuardClient from './gameguard-client.js';
+
+    const ggc = new GameGuardClient();
+
+    ggc.on('open', (playerId) => {
+      console.log('opened', playerId);
+    });
+
+    ggc.on('close', (reason) => {
+      console.log('closed', reason);
+    });
+  </script>
 
   <script type="module">
 

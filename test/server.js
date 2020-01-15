@@ -9,11 +9,7 @@ fastify.register(require('fastify-static'), { root: path.resolve(__dirname) });
 
 const gg = new GameGuard(fastify.server);
 
-setTimeout(() => {
-  gg.system.broadcast('info', 'hello world');
-
-  console.log(gg.players._players);
-}, 5000);
+gg.players.on('player-connected', (player) => console.log(player));
 
 fastify.get('/', async (request, reply) => reply.sendFile('index.html'));
 
