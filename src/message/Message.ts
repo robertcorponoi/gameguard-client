@@ -45,7 +45,7 @@ export default class Message {
    * @returns {string} Returns the stringified version of this message.
    */
   stringify(): string {
-    const message: Object = { type: this.type, content: this.contents, timestamp: this.timestamp };
+    const message: Object = { type: this.type, contents: this.contents, timestamp: this.timestamp };
 
     return JSON.stringify(message);
   }

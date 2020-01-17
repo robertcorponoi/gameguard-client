@@ -1,3 +1,7 @@
+#### 0.6.1 / 2020-01-16
+=======================
+* [HOTFIX] Message.ts was still sending a message with a key of content instead of contents.
+
 #### 0.6.0 / 2020-01-16
 =======================
 * [HOTFIX] Changed `content` in Message.ts to `contents`.

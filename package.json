@@ -1,6 +1,6 @@
 {
   "name": "gameguard-client",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "The client-side companion to GameGuard",
   "scripts": {
     "tsconfig": "tsc --init --declaration --allowSyntheticDefaultImports --target esnext --outDir lib",
