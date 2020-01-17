@@ -18,7 +18,7 @@ export default class Message {
    * 
    * @property {string}
    */
-  content: string;
+  contents: string;
 
   /**
    * The timestamp of when this message was created and sent.
@@ -29,12 +29,12 @@ export default class Message {
 
   /**
    * @param {string} type The type of message that is being sent.
-   * @param {string} content The actual contents of the message.
+   * @param {string} contents The actual contents of the message.
    */
-  constructor(type: string, content: string) {
+  constructor(type: string, contents: string) {
     this.type = type;
 
-    this.content = content;
+    this.contents = contents;
 
     this.timestamp = + new Date();
   }
@@ -45,7 +45,7 @@ export default class Message {
    * @returns {string} Returns the stringified version of this message.
    */
   stringify(): string {
-    const message: Object = { type: this.type, content: this.content, timestamp: this.timestamp };
+    const message: Object = { type: this.type, content: this.contents, timestamp: this.timestamp };
 
     return JSON.stringify(message);
   }

@@ -1,6 +1,6 @@
 {
   "name": "gameguard-client",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "The client-side companion to GameGuard",
   "scripts": {
     "tsconfig": "tsc --init --declaration --allowSyntheticDefaultImports --target esnext --outDir lib",
@@ -48,7 +48,7 @@
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "dependencies": {
     "eventverse": "^1.0.6"

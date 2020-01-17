@@ -15,7 +15,7 @@ export default class Message {
      *
      * @property {string}
      */
-    content: string;
+    contents: string;
     /**
      * The timestamp of when this message was created and sent.
      *
@@ -24,9 +24,9 @@ export default class Message {
     timestamp: number;
     /**
      * @param {string} type The type of message that is being sent.
-     * @param {string} content The actual contents of the message.
+     * @param {string} contents The actual contents of the message.
      */
-    constructor(type: string, content: string);
+    constructor(type: string, contents: string);
     /**
      * Prepare this message to be sent by stringifying the contents of it.
      *

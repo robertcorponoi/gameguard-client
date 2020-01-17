@@ -480,19 +480,19 @@ function () {
 
   /**
    * @param {string} type The type of message that is being sent.
-   * @param {string} content The actual contents of the message.
+   * @param {string} contents The actual contents of the message.
    */
-  function Message(type, content) {
+  function Message(type, contents) {
     _classCallCheck(this, Message);
 
     _defineProperty(this, "type", void 0);
 
-    _defineProperty(this, "content", void 0);
+    _defineProperty(this, "contents", void 0);
 
     _defineProperty(this, "timestamp", void 0);
 
     this.type = type;
-    this.content = content;
+    this.contents = contents;
     this.timestamp = +new Date();
   }
   /**
@@ -507,7 +507,7 @@ function () {
     value: function stringify() {
       var message = {
         type: this.type,
-        content: this.content,
+        content: this.contents,
         timestamp: this.timestamp
       };
       return JSON.stringify(message);
