@@ -1,3 +1,7 @@
+#### 0.6.2 / 2020-01-16
+=======================
+* [HOTFIX] Compiled files from last commit
+
 #### 0.6.1 / 2020-01-16
 =======================
 * [HOTFIX] Message.ts was still sending a message with a key of content instead of contents.

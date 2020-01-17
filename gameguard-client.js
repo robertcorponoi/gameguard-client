@@ -507,7 +507,7 @@ function () {
     value: function stringify() {
       var message = {
         type: this.type,
-        content: this.contents,
+        contents: this.contents,
         timestamp: this.timestamp
       };
       return JSON.stringify(message);
