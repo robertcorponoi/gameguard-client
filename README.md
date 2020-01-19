@@ -24,6 +24,8 @@ The client-side component to [GameGuard](https://github.com/robertcorponoi/gameg
 
 **Note:** This is still in pre 1.0.0 so features/documentation are actively being developed.
 
+**Note:** As of 0.7.0 gameguard and gameguard-client installs that match version numbmers will be guaranteed to work with each other.
+
 This client-side component to GameGuard is used to communicate with the GameGuard server in order to manage your game's player states.
 
 ## **Installation**

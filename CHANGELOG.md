@@ -1,21 +1,25 @@
-#### 0.6.2 / 2020-01-16
+0.7.0 / 2020-01-19
+==================
+* [FEATURE] Matched versions with gameguard. From this point forward both packages with matching version numbers will be guaranteed to work with each other.
+
+0.6.2 / 2020-01-16
 =======================
 * [HOTFIX] Compiled files from last commit
 
-#### 0.6.1 / 2020-01-16
+0.6.1 / 2020-01-16
 =======================
 * [HOTFIX] Message.ts was still sending a message with a key of content instead of contents.
 
-#### 0.6.0 / 2020-01-16
+0.6.0 / 2020-01-16
 =======================
 * [HOTFIX] Changed `content` in Message.ts to `contents`.
 * [MISC] Updated typescript to latest version.
 
-#### 0.5.0 / 2020-01-14
+0.5.0 / 2020-01-14
 =======================
 * [HOTFIX] Changed `player-joined` to `player-connected` as it changed in gameguard.
 * [MISC] Updated dev dependencies to their latest versions.
 
-#### 0.4.3 / 2020-01-10
+0.4.3 / 2020-01-10
 =======================
 * Initial release as a separate package from gameguard.
