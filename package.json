@@ -1,6 +1,6 @@
 {
   "name": "gameguard-client",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "The client-side companion to GameGuard",
   "scripts": {
     "tsconfig": "tsc --init --declaration --allowSyntheticDefaultImports --target esnext --outDir lib",
@@ -11,7 +11,8 @@
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
     "bundle": "rollup -c",
     "bundle:watch": "rollup -c --watch",
-    "test": "node test/server.js"
+    "test": "node test/server.js",
+    "prepublish": "npm run build && npm run bundle"
   },
   "repository": {
     "type": "git",
@@ -41,16 +42,16 @@
     "@babel/preset-typescript": "^7.8.3",
     "chai": "^4.2.0",
     "fastify": "^2.11.0",
-    "fastify-static": "^2.5.1",
-    "gameguard": "^0.5.0",
-    "mocha": "^7.0.0",
-    "rollup": "^1.29.0",
+    "fastify-static": "^2.6.0",
+    "gameguard": "^0.8.0",
+    "mocha": "^7.0.1",
+    "rollup": "^1.29.1",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "eventverse": "^1.0.6"
+    "eventverse": "^2.0.0"
   }
 }

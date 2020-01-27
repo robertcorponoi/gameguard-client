@@ -52,8 +52,11 @@ In order to use gameguard-client, you have to include the script on your game's 
 <body>
   <canvas id="myGame" width="400" height="350"></canvas>
 
+  <!-- You can reference the script from unpkg -->
+  <script type="module" src="https://unpkg.com/gameguard-client@0.7.0/gameguard-client.js"></script>
+
   <script type="module">
-    // Import the gameguard-client class from the gameguard-client.js file. You can serve it from the node_modules directory from your server or you can use a CDN.
+    // Or you can import the gameguard-client class from the gameguard-client.js file. You can serve it from the node_modules directory from your server or you can use a CDN.
     import GameGuardClient from 'node_modules/gameguard-client/gameguard-client.js';
 
     const ggc = new GameGuardClient();

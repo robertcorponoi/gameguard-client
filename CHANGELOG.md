@@ -1,3 +1,8 @@
+0.8.0 / 2020-01-26
+==================
+* [DOCS] Added option for using script through unpkg.
+* [MISC] Updated dependencies to their latest versions.
+
 0.7.0 / 2020-01-19
 ==================
 * [FEATURE] Matched versions with gameguard. From this point forward both packages with matching version numbers will be guaranteed to work with each other.
