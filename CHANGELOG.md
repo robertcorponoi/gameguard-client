@@ -1,3 +1,9 @@
+0.10.0 / 2020-01-29
+===================
+* [TEST] Updated test to account for gameguard signal name change.
+* [MISC] Updated gameguard to latest version.
+* [MISC] Renamed `prepublish` script in package.json to `prepare` as prompted by npm.
+
 0.9.0 / 2020-01-28
 ==================
 * [FEATURE] Switched from using events to signals.
