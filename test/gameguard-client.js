@@ -35,58 +35,13 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) _setPrototypeOf(subClass, superClass);
-}
-
-function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-    return o.__proto__ || Object.getPrototypeOf(o);
-  };
-  return _getPrototypeOf(o);
-}
-
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-
-  return _setPrototypeOf(o, p);
-}
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (typeof call === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return _assertThisInitialized(self);
-}
-
 function _classCallCheck$1(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
+
+var classCallCheck = _classCallCheck$1;
 
 function _defineProperties$1(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -104,6 +59,8 @@ function _createClass$1(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
+var createClass = _createClass$1;
+
 function _defineProperty$1(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -119,172 +76,173 @@ function _defineProperty$1(obj, key, value) {
   return obj;
 }
 
-var Listener =
-/**
- * The function that will be called when the listener is processed.
- * 
- * @property {Function}
- */
+var defineProperty = _defineProperty$1;
 
-/**
- * Whether or not this listener will be automatically destroyed after being run once.
- * 
- * @property {boolean}
- */
-
-/**
- * Keeps track of the number of times that this listener has been called.
- * 
- * @property {number} 
- */
-
-/**
- * The number of times this listener function should be used before being destroyed automatically.
- * 
- * @property {number}
- */
-
-/**
- * @param {Function} fn The function to run when this listener is called.
- * @param {boolean} [once=false] Indicates whether this listener should only be called once or not.
- * @param {number} [users=Infinity] Indicates how many times this listener can be called before being destoryed automatically.
- */
-function Listener(fn) {
-  var once = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  var uses = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Infinity;
-
-  _classCallCheck$1(this, Listener);
-
-  _defineProperty$1(this, "fn", void 0);
-
-  _defineProperty$1(this, "once", void 0);
-
-  _defineProperty$1(this, "timesCalled", 0);
-
-  _defineProperty$1(this, "uses", Infinity);
-
-  this.fn = fn;
-  this.once = once;
-  this.uses = uses;
-};
-
-/**
- * Compare two functions by turning them into strings and removing whitespace/line-breaks and then checking equality.
- * 
- * @param {Function} fn1 The first function.
- * @param {Function} fn2 The second function.
- * 
- * @returns {boolean} Returns true if the functions are equal and false otherwise.
- */
-
-function compareFunctions(fn1, fn2) {
-  var f1 = fn1.toString().replace(/\n/g, '').replace(/\s{2}/g, ' ');
-  var f2 = fn2.toString().replace(/\n/g, '').replace(/\s{2}/g, ' ');
-  if (f1 === f2) return true;
-  return false;
-}
-
-/**
- * Eventverse is a higly performant and easy to use event emitter for Nodejs and the browser.
- */
-
-var Eventverse =
+var Task =
 /*#__PURE__*/
 function () {
   /**
-   * The maximum amount of listeners each event can have at one time.
+   * The method to be called when processing this task.
+   * 
+   * @property {Function}
+   */
+
+  /**
+   * Indicates whether this task will only run once before being deleted or not.
+   * 
+    * @private
+    * 
+   * @property {boolean}
+   */
+
+  /**
+   * If true this indicates to Hypergiant that it needs to be deleted on the next pass.
+    * 
+    * @private
+   * 
+   * @property {boolean}
+   */
+
+  /**
+   * The number of times that this task has been called.
     * 
     * @private
    * 
    * @property {number}
-   * 
-   * @default 10
    */
 
   /**
-   * A collection of all of the listeners created for this instance of Eventverse.
+   * Indicates whether this task is currently paused or not.
    * 
-   * @property {Object}
+   * @property {boolean}
    */
 
   /**
-   * @param {number} [maxListenerCount=10] The maximum amount of listeners each event can have at one time. 
+   * @param {Function} fn The method to attach to this task.
+   * @param {boolean} once Indicates whether this task will only run once before being deleted or not.
    */
-  function Eventverse() {
-    var maxListenerCount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+  function Task(fn, once) {
+    classCallCheck(this, Task);
 
-    _classCallCheck$1(this, Eventverse);
+    defineProperty(this, "fn", void 0);
 
-    _defineProperty$1(this, "_maxListenerCount", void 0);
+    defineProperty(this, "_once", void 0);
 
-    _defineProperty$1(this, "events", Object.create(null));
+    defineProperty(this, "_delete", false);
 
-    this._maxListenerCount = maxListenerCount;
+    defineProperty(this, "_timesCalled", 0);
+
+    defineProperty(this, "paused", false);
+
+    this.fn = fn;
+    this._once = once;
   }
   /**
-   * Returns the number of max listeners each event can have at one time.
+   * Returns whether the task should run only once or not.
    * 
-   * @returns {number}
+   * @returns {boolean}
    */
 
 
-  _createClass$1(Eventverse, [{
-    key: "listenerCount",
+  createClass(Task, [{
+    key: "run",
 
     /**
-     * Returns the number of listeners for a given event.
+     * Runs the method associated with this task.
      * 
-     * @param {string} event The name of the event.
-     * 
-     * @returns {number}
+     * @param {...*} args Any other data that should be passed to this task.
      */
-    value: function listenerCount(event) {
-      return this.events[event].length;
+    value: function run() {
+      if (this.paused) return;
+      this.fn.apply(this, arguments);
+      this._timesCalled++;
+      if (this._once) this._delete = true;
+    }
+  }, {
+    key: "once",
+    get: function get() {
+      return this._once;
     }
     /**
-     * Returns the number of times a listener was called.
+     * Returns whether the task should be deleted or not.
      * 
-     * @param {string} event The name of the event to get the times called for.
+     * @returns {boolean}
+     */
+
+  }, {
+    key: "delete",
+    get: function get() {
+      return this._delete;
+    }
+    /**
+     * Returns the number of times that this task has been called.
      * 
-     * @returns {number} Returns the number of times the event was called.
+     * @returns {number}
      */
 
   }, {
     key: "timesCalled",
-    value: function timesCalled(event) {
-      return this.events[event][0].timesCalled;
+    get: function get() {
+      return this._timesCalled;
+    }
+  }]);
+
+  return Task;
+}();
+
+/**
+ * Hypergiant is used to create signals that run a task when emitted.
+ *
+ * One of the biggest advtantages that signals have over native JavaScript events is that they don't rely 
+ * on correct typing.
+ */
+
+var Hypergiant =
+/*#__PURE__*/
+function () {
+  function Hypergiant() {
+    classCallCheck(this, Hypergiant);
+
+    defineProperty(this, "_tasks", new Set());
+  }
+
+  createClass(Hypergiant, [{
+    key: "add",
+
+    /**
+     * Add a new signal.
+     * 
+     * @param {Function} fn The method that should be called when the signal is dispatched.
+     * @param {boolean} [once=false] Indicates whether this signal should only be dispatched once and then deleted.
+     * 
+     * @returns {Hypergiant} Returns this for chaining.
+     */
+    value: function add(fn) {
+      var once = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      this._tasks.add(new Task(fn, once));
+
+      return this;
     }
     /**
-     * Runs all of the listeners attached to this Eventverse with the event name and with the supplied arguments.
+     * Dispatch this Hypergiant event and run all of the tasks associated
+     * with it along with any data passed to it.
      * 
-     * @param {string} event The name of the event to emit.
-     * @param {...*} args The arguments to pass to the listeners.
+     * @param {...*} args Any other data that should be passed to the tasks associated with this Hypergiant instance.
      */
 
   }, {
-    key: "emit",
-    value: function emit(event) {
-      if (!this._exists(event)) return;
-      var listeners = this.events[event];
-
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-
+    key: "dispatch",
+    value: function dispatch() {
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = listeners[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _listener$fn;
-
-          var listener = _step.value;
-
-          (_listener$fn = listener.fn).call.apply(_listener$fn, [this].concat(args));
-
-          listener.timesCalled++;
-          if (listener.once || listener.timesCalled === listener.uses) this.removeListener(event, listener.fn);
+        for (var _iterator = this._tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var task = _step.value;
+          task.run.apply(task, arguments);
+          if (task["delete"]) this._tasks["delete"](task);
         }
       } catch (err) {
         _didIteratorError = true;
@@ -302,44 +260,31 @@ function () {
       }
     }
     /**
-     * Removes a listener function for the given event.
-     * 
-     * @param {string} event The name of the event to remove the listener on.
-     * @param {Function} listener The listener to remove from the event.
-     * 
-     * @returns {Eventverse} Returns this for chaining.
+     * Removes a task from this signal by name.
+     *
+     * @param {Function} task The task to remove.
+     *
+     * @returns {Hypergiant} Returns this for chaining.
      */
 
   }, {
-    key: "removeListener",
-    value: function removeListener(event, listener) {
-      var _this = this;
-
-      if (!this._exists(event)) {
-        console.warn('[Eventverse][removeListener]: Unable to remove listener for an event that doesnt exist.');
-        return;
-      }
-
+    key: "remove",
+    value: function remove(fn) {
+      var fnToString = fn.toString();
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
 
       try {
-        var _loop = function _loop() {
-          var eventListener = _step2.value;
+        for (var _iterator2 = this._tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var task = _step2.value;
+          var taskFnToString = task.fn.toString();
 
-          if (compareFunctions(eventListener.fn, listener)) {
-            _this.events[event] = _this.events[event].filter(function (evListener) {
-              return evListener != eventListener;
-            });
-            return "break";
+          if (fnToString === taskFnToString) {
+            this._tasks["delete"](task);
+
+            break;
           }
-        };
-
-        for (var _iterator2 = this.events[event][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _ret = _loop();
-
-          if (_ret === "break") break;
         }
       } catch (err) {
         _didIteratorError2 = true;
@@ -359,110 +304,176 @@ function () {
       return this;
     }
     /**
-     * Removes all listeners from a given event.
-     * 
-     * @param {string} event The name of the event to remove all listeners from.
-     * 
-     * @returns {Eventverse} Returns this for chaining.
+     * Removes all tasks from this signal.
+     *
+     * @returns {Hypergiant} Returns this for chaining.
      */
 
   }, {
-    key: "removeAllListeners",
-    value: function removeAllListeners(event) {
-      if (!this._exists(event)) {
-        console.warn('[Eventverse][removeAllListeners]: Unable to remove listener for an event that doesnt exist.');
-        return;
+    key: "removeAll",
+    value: function removeAll() {
+      this._tasks.clear();
+
+      return this;
+    }
+    /**
+     * Pauses a task attached to this signal until it is unpaused.
+     * 
+     * This means that the paused task will not be called and just be silent until the `enable` method is called
+     * on it returning it back to its normal state.
+     * 
+     * @param {Function} task The task to pause.
+     * 
+     * @returns {Hypergiant} Returns this for chaining.
+     */
+
+  }, {
+    key: "pause",
+    value: function pause(fn) {
+      var fnToString = fn.toString();
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = this._tasks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var task = _step3.value;
+          var taskFnToString = task.fn.toString();
+
+          if (!task.paused && fnToString === taskFnToString) {
+            task.paused = true;
+            break;
+          }
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+            _iterator3["return"]();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
       }
 
-      this.events[event] = [];
       return this;
     }
     /**
-     * Add a listener function that will only run once.
+     * Resumes a task from a paused state.
      * 
-     * @param {string} event The name of the event to add a listener for.
-     * @param {Function} fn The function to run when the event is emitted.
+     * @param {Function} task The paused task.
      * 
-     * @returns {Eventverse} Returns this for chaining.
+     * @returns {Hypergiant} Returns this for chaining.
      */
 
   }, {
-    key: "once",
-    value: function once(event, fn) {
-      this._addListener(event, fn, true);
+    key: "resume",
+    value: function resume(fn) {
+      var fnToString = fn.toString();
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
-      return this;
-    }
-    /**
-     * Adds a listener function for the given event.
-     * 
-     * @param {string} event The name of the event to add a listener for.
-     * @param {Function} fn The function to run when the event is emitted.
-      * @param {number} [uses] Specify this to limit the number of times a listener function is used before being destroyed automatically.
-     * 
-     * @returns {Eventverse} Returns this for chaining.
-     */
+      try {
+        for (var _iterator4 = this._tasks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var task = _step4.value;
+          var taskFnToString = task.fn.toString();
 
-  }, {
-    key: "on",
-    value: function on(event, fn, uses) {
-      this._addListener(event, fn, false, uses);
-
-      return this;
-    }
-    /**
-    * Adds a listener function for the given event.
-    * 
-     * @private
-    * 
-    * @param {string} event The name of the event to add a listener for.
-    * @param {Function} fn The function to run when the event is emitted.
-    * @param {boolean} once Indicates whether this listener should only be called once.
-    * 
-    * @returns {Eventverse} Returns this for chaining.
-    */
-
-  }, {
-    key: "_addListener",
-    value: function _addListener(event, fn) {
-      var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var uses = arguments.length > 3 ? arguments[3] : undefined;
-      var listener = new Listener(fn, once, uses);
-
-      if (!this._exists(event)) {
-        this.events[event] = [];
-      } else if (this.events[event].length === this.maxListenerCount) {
-        console.warn("[Eventverse][addListener]: The event ".concat(event, " already has the max amount of listeners."));
-        return;
+          if (task.paused && fnToString === taskFnToString) {
+            task.paused = false;
+            break;
+          }
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+            _iterator4["return"]();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
       }
 
-      this.events[event].push(listener);
       return this;
     }
     /**
-     * Checks if an event exists.
-      * 
-     * @private
+     * Makes a task a noop function.
      * 
-     * @param {string} event The name of the event.
+     * @param {Function} task The task to make noop.
      * 
-     * @returns {boolean} Returns true if the event exists or false otherwise.
+     * @returns {Hypergiant} Returns this for chaining.
      */
 
   }, {
-    key: "_exists",
-    value: function _exists(event) {
-      if (this.events[event]) return true;
-      return false;
+    key: "noop",
+    value: function noop(fn) {
+      var fnToString = fn.toString();
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = this._tasks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var task = _step5.value;
+          var taskFnToString = task.fn.toString();
+
+          if (fnToString === taskFnToString) {
+            task.fn = function () {};
+
+            break;
+          }
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+            _iterator5["return"]();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+
+      return this;
     }
   }, {
-    key: "maxListenerCount",
+    key: "tasks",
+
+    /**
+     * Returns the tasks created for this signal.
+     * 
+     * @returns {Set<Task>}
+     */
     get: function get() {
-      return this._maxListenerCount;
+      return this._tasks;
+    }
+    /**
+     * Returns the number of tasks currently assigned to this signal.
+     * 
+     * @returns {number}
+     */
+
+  }, {
+    key: "numTasks",
+    get: function get() {
+      return this._tasks.size;
     }
   }]);
 
-  return Eventverse;
+  return Hypergiant;
 }();
 
 var Message =
@@ -670,9 +681,7 @@ function () {
 
 var GameGuardClient =
 /*#__PURE__*/
-function (_Eventverse) {
-  _inherits(GameGuardClient, _Eventverse);
-
+function () {
   /**
    * A reference to this client's options.
    * 
@@ -698,55 +707,91 @@ function (_Eventverse) {
    */
 
   /**
+   * The signal that is dispatched when the client is assigned a player id.
+   *
+   * This signal is dispatched with the id that was assigned to this client.
+   *
+   * @private
+   *
+   * @property {Hypergiant}
+   */
+
+  /**
+   * The signal that is dispatched when the client receives a message from the server.
+   *
+   * This signal is dispatched with the message that was sent to the client.
+   *
+   * @private
+   *
+   * @property {Hypergiant}
+   */
+
+  /**
+   * The signal that is dispatched when the client's connection with the server is ended.
+   *
+   * This signal is dispatched with the close code and reason.
+   *
+   * @private
+   *
+   * @property {Hypergiant}
+   */
+
+  /**
    * @param {Object} [options] The initialization parameters passed to this instance.
    * @param {boolean} [options.secure=false] Indicates whether the websocket will connect to the server with a secure connection or not.
    */
   function GameGuardClient() {
-    var _this;
-
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, GameGuardClient);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(GameGuardClient).call(this));
+    _defineProperty(this, "_options", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "_options", void 0);
+    _defineProperty(this, "_socket", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "_socket", void 0);
+    _defineProperty(this, "_clientData", new ClientData());
 
-    _defineProperty(_assertThisInitialized(_this), "_clientData", new ClientData());
+    _defineProperty(this, "_connected", new Hypergiant());
 
-    _this._options = new Options(options);
+    _defineProperty(this, "_messaged", new Hypergiant());
 
-    _this._boot();
+    _defineProperty(this, "_disconnected", new Hypergiant());
 
-    return _this;
+    this._options = new Options(options);
+
+    this._boot();
   }
   /**
-   * Initialize the WebSocket connection and all of the events that we need to respond to.
-   * 
-   * @private
+   * Returns the connected signal.
+   *
+   * @returns {Hypergiant}
    */
 
 
   _createClass(GameGuardClient, [{
     key: "_boot",
+
+    /**
+     * Initialize the WebSocket connection and all of the events that we need to respond to.
+     * 
+     * @private
+     */
     value: function _boot() {
-      var _this2 = this;
+      var _this = this;
 
       var wsProtocol = this._options.secure ? 'wss' : 'ws';
       this._socket = new WebSocket("".concat(wsProtocol, "://").concat(window.location.host, "/"));
 
       this._socket.addEventListener('open', function () {
-        return _this2._onOpen();
+        return _this._onOpen();
       });
 
       this._socket.addEventListener('message', function (message) {
-        return _this2._onMessage(message);
+        return _this._onMessage(message);
       });
 
       this._socket.addEventListener('close', function (ev) {
-        return _this2._onClose(ev);
+        return _this._onClose(ev);
       });
     }
     /**
@@ -763,13 +808,12 @@ function (_Eventverse) {
 
       var message = new Message('player-connected', playerId);
 
-      this._socket.send(message.stringify()); // @ts-ignore
+      this._socket.send(message.stringify());
 
-
-      this.emit('open', playerId);
+      this.connected.dispatch(playerId);
     }
     /**
-     * TODO:
+     * When the client receives a message from the player, dispatch a signal with the message that was sent.
      * 
      * @private
      * 
@@ -780,9 +824,8 @@ function (_Eventverse) {
     key: "_onMessage",
     value: function _onMessage(message) {
       var parsed = JSON.parse(message.data);
-      var msg = new Message(parsed.type, parsed.content); // @ts-ignore
-
-      this.emit('message', msg);
+      var msg = new Message(parsed.type, parsed.content);
+      this.messaged.dispatch(msg);
     }
     /**
      * When the WebSocket connection closes, we end the players connection to the game and notify them why, if a reason
@@ -796,12 +839,41 @@ function (_Eventverse) {
   }, {
     key: "_onClose",
     value: function _onClose(ev) {
-      // @ts-ignore
-      this.emit('close', ev);
+      this.disconnected.dispatch({
+        code: ev.code,
+        reason: ev.reason
+      });
+    }
+  }, {
+    key: "connected",
+    get: function get() {
+      return this._connected;
+    }
+    /**
+     * Returns the messaged signal.
+     *
+     * @returns {Hypergiant}
+     */
+
+  }, {
+    key: "messaged",
+    get: function get() {
+      return this._messaged;
+    }
+    /**
+     * Returns the disconnected signal.
+     *
+     * @returns {Hypergiant}
+     */
+
+  }, {
+    key: "disconnected",
+    get: function get() {
+      return this._disconnected;
     }
   }]);
 
   return GameGuardClient;
-}(Eventverse);
+}();
 
 export default GameGuardClient;

@@ -20,7 +20,7 @@ describe('Connecting to the GameGuard server', () => {
   it('should create a new playerId for a new client', done => {
     deleteAllCookies();
 
-    gg.on('open', playerId => {
+    gg.connected.add(playerId => {
       lastPlayerId = playerId;
 
       chai.expect(playerId).to.not.be.null;
@@ -30,7 +30,7 @@ describe('Connecting to the GameGuard server', () => {
   });
 
   it('should save the last player id of the player in the cookie storage and use it again', done => {
-    gg.on('open', playerId => {
+    gg.connected.add(playerId => {
       chai.expect(playerId).to.equal(lastPlayerId);
 
       done();
@@ -40,7 +40,7 @@ describe('Connecting to the GameGuard server', () => {
 
 describe('Kicking and banning the player', () => {
   it('should give a reason why the player was kicked when the player is kicked by the server', done => {
-    gg.on('close', reason => {
+    gg.disconnected.add(reason => {
       chai.expect(reason).to.not.be.null;
 
       done();
