@@ -1,3 +1,10 @@
+0.9.0 / 2020-01-28
+==================
+* [FEATURE] Switched from using events to signals.
+* [DOCS] Updated docs for signals.
+* [TEST] Updated tests.
+* [MISC] Updated dependencies to their latest versions.
+
 0.8.0 / 2020-01-26
 ==================
 * [DOCS] Added option for using script through unpkg.

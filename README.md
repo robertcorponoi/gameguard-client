@@ -65,46 +65,46 @@ In order to use gameguard-client, you have to include the script on your game's 
 </html>
 ```
 
-## **Events**
+## **Signals**
 
-gameguard-client provides the following events that can be listened to:
+gameguard-client uses signals instead of events. If you're unfamiliar with signals check out [hypergiant](https://github.com/robertcorponoi/hypergiant) to see the signals that gameguard-client is using.
 
-### **open**
+### **connected**
 
-The open event is emitted when the player establishes a connection to the gameguard server and the client either creates an id for the player or retrives an existing id.
+The connected signal is dispatched when the player establishes a connection to the gameguard server and the client either creates an id for the player or retrives an existing id.
 
 **example:**
 
 ```js
-ggc.on('open', (playerId) => {
+ggc.connected.add(playerId => {
   // PlayerId is the id for that player that was just created if the player is new or retrieved if the player is existing.
   console.log(playerId);
 });
 ```
 
-### **message**
+### **messaged**
 
-The message event is emitted when a message is received from the server.
+The messaged signal is dispatched when a message is received from the server with the message that was sent..
 
 **example:**
 
 ```js
-ggc.on('message', (message) => {
+ggc.messaged.add(message => {
   // The message object contains the type of message and the contents of the message sent.
   console.log(message.type, message.content);
 });
 ```
 
-### **close**
+### **disconnected**
 
-The close event is emitted when the player's connection to the server is closed, whether the server went down or the player was kicked/banned.
+The disconnected signal is dispatched when the player's connection to the server is closed, whether the server went down or the player was kicked/banned.
 
 **example:**
 
 ```js
-ggc.on('close', (reason) => {
-  // Reason is the reason that the player's connection to the server was closed.
-  console.log(reason);
+ggc.disconnected.add(code, reason) => {
+  // Code is the close code and reason is the reason that the player's connection to the server was closed.
+  console.log(code, reason);
 });
 ```
 
