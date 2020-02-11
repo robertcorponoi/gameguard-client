@@ -144,7 +144,7 @@ export default class GameGuardClient {
   private _onMessage(message: any) {
     const parsed: any = JSON.parse(message.data);
 
-    const msg: Message = new Message(parsed.type, parsed.content);
+    const msg: Message = new Message(parsed.type, parsed.contents);
 
     this.messaged.dispatch(msg);
   }

@@ -824,7 +824,7 @@ function () {
     key: "_onMessage",
     value: function _onMessage(message) {
       var parsed = JSON.parse(message.data);
-      var msg = new Message(parsed.type, parsed.content);
+      var msg = new Message(parsed.type, parsed.contents);
       this.messaged.dispatch(msg);
     }
     /**

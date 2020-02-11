@@ -1,12 +1,10 @@
-<h1 align="center">
+<div align="center">
 
-GameGuard Client
-
-</h1>
-
-<p align="center">
+# GameGuard Client
 
 The client-side component to [GameGuard](https://github.com/robertcorponoi/gameguard).
+
+</div>
 
 <div align="center">
 
