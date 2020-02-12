@@ -51,7 +51,7 @@ In order to use gameguard-client, you have to include the script on your game's 
   <canvas id="myGame" width="400" height="350"></canvas>
 
   <!-- You can reference the script from unpkg -->
-  <script type="module" src="https://unpkg.com/gameguard-client@0.7.0/gameguard-client.js"></script>
+  <script type="module" src="https://unpkg.com/gameguard-client@latest/gameguard-client.js"></script>
 
   <script type="module">
     // Or you can import the gameguard-client class from the gameguard-client.js file. You can serve it from the node_modules directory from your server or you can use a CDN.
@@ -61,6 +61,24 @@ In order to use gameguard-client, you have to include the script on your game's 
   </script>
 </body>
 </html>
+```
+
+## **Properties**
+
+The following properties are available on each client:
+
+### **latency**
+
+Returns the latency as calculated by the gameguard server. This is updated on an interval as set in the gameguard server initialization options.
+
+**example:**
+
+```js
+ggc.connected.add(() => {
+  setInterval(() => {
+    console.log(ggc.latency);
+  });
+});
 ```
 
 ## **Signals**

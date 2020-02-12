@@ -8,6 +8,8 @@ let mockserver;
 
 let lastPlayerId;
 
+mocha.setup({ globals: ['__VUE_DEVTOOLS_TOAST__'] });
+
 beforeEach(() => {
   gg = new GameGuardClient();
 

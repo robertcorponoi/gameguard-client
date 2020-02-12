@@ -1,3 +1,10 @@
+## 0.11.0 / 2020-02-11
+- [FEATURE] Added latency property to client that is updated whenever the gameguard server is set to send over the latest latency information.
+- [DOCS] Updated docs.
+- [MISC] Updated gameguard dev dependency to latest version.
+- [MISC] Removed unnecessary dependencies.
+- [MISC] Updated rollup plugins to namespaced versions.
+
 ## 0.10.1 / 2020-02-10
 - [HOTFIX] Fixed contents of message not being parsed correctly.
 - [MISC] Changed CHANGELOG format.

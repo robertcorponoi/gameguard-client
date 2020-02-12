@@ -737,6 +737,14 @@ function () {
    */
 
   /**
+   * This client's latency to the server, in milliseconds.
+   * 
+   * @private
+   * 
+   * @property {number}
+   */
+
+  /**
    * @param {Object} [options] The initialization parameters passed to this instance.
    * @param {boolean} [options.secure=false] Indicates whether the websocket will connect to the server with a secure connection or not.
    */
@@ -756,6 +764,8 @@ function () {
     _defineProperty(this, "_messaged", new Hypergiant());
 
     _defineProperty(this, "_disconnected", new Hypergiant());
+
+    _defineProperty(this, "_latency", 0);
 
     this._options = new Options(options);
 
@@ -825,7 +835,21 @@ function () {
     value: function _onMessage(message) {
       var parsed = JSON.parse(message.data);
       var msg = new Message(parsed.type, parsed.contents);
-      this.messaged.dispatch(msg);
+
+      switch (msg.type) {
+        case 'latency-ping':
+          var latencyMessage = new Message('latency-pong', msg.contents);
+
+          this._socket.send(latencyMessage.stringify());
+
+          break;
+
+        case 'latency':
+          this._latency = parseFloat(msg.contents);
+
+        default:
+          this.messaged.dispatch(msg);
+      }
     }
     /**
      * When the WebSocket connection closes, we end the players connection to the game and notify them why, if a reason
@@ -870,6 +894,17 @@ function () {
     key: "disconnected",
     get: function get() {
       return this._disconnected;
+    }
+    /**
+     * Returns this client's latency to the server, in milliseconds.
+     * 
+     * @returns {number}
+     */
+
+  }, {
+    key: "latency",
+    get: function get() {
+      return this._latency;
     }
   }]);
 

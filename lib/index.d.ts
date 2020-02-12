@@ -58,6 +58,14 @@ export default class GameGuardClient {
      */
     private _disconnected;
     /**
+     * This client's latency to the server, in milliseconds.
+     *
+     * @private
+     *
+     * @property {number}
+     */
+    private _latency;
+    /**
      * @param {Object} [options] The initialization parameters passed to this instance.
      * @param {boolean} [options.secure=false] Indicates whether the websocket will connect to the server with a secure connection or not.
      */
@@ -80,6 +88,12 @@ export default class GameGuardClient {
      * @returns {Hypergiant}
      */
     get disconnected(): Hypergiant;
+    /**
+     * Returns this client's latency to the server, in milliseconds.
+     *
+     * @returns {number}
+     */
+    get latency(): number;
     /**
      * Initialize the WebSocket connection and all of the events that we need to respond to.
      *

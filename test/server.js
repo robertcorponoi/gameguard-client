@@ -9,8 +9,6 @@ fastify.register(require('fastify-static'), { root: path.resolve(__dirname) });
 
 const gg = new GameGuard(fastify.server);
 
-gg.players.connected.add(player => console.log(player));
-
 fastify.get('/', async (request, reply) => reply.sendFile('index.html'));
 
 fastify.listen(3000, (err, address) => {
