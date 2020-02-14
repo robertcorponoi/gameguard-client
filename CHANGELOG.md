@@ -1,3 +1,7 @@
+## 0.12.0 / 2020-02-13
+- [MISC] Updated to make sure it works with latest version of gameguard.
+- [MISC] Updated gameguard dev dependency to its latest version.
+
 ## 0.11.0 / 2020-02-11
 - [FEATURE] Added latency property to client that is updated whenever the gameguard server is set to send over the latest latency information.
 - [DOCS] Updated docs.
