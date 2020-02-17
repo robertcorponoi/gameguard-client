@@ -1,5 +1,9 @@
+## 0.13.0 / 2020-02-16
+- [MISC] Made sure the client works with the latest version (0.13.0) of gameguard.
+- [MISC] Update dependencies to their latest versions.
+
 ## 0.12.0 / 2020-02-13
-- [MISC] Updated to make sure it works with latest version of gameguard.
+- [MISC] Made sure the client works with the latest version (0.12.0) of gameguard.
 - [MISC] Updated gameguard dev dependency to its latest version.
 
 ## 0.11.0 / 2020-02-11

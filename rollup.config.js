@@ -26,5 +26,8 @@ export default {
   }, {
     file: `test/${pkg.module}`,
     format: 'esm'
+  }, {
+    file: `test/custom/public/${pkg.module}`,
+    format: 'esm'
   }]
 };

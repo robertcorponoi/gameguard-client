@@ -5,9 +5,9 @@ const fastify = require('fastify')({ logger: true });
 
 const GameGuard = require('gameguard');
 
-fastify.register(require('fastify-static'), { root: path.resolve(__dirname) });
+const gameguard = new GameGuard(fastify.server);
 
-const gg = new GameGuard(fastify.server);
+fastify.register(require('fastify-static'), { root: path.resolve(__dirname) });
 
 fastify.get('/', async (request, reply) => reply.sendFile('index.html'));
 
