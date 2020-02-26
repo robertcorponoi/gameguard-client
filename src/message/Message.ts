@@ -28,6 +28,13 @@ export default class Message {
   timestamp: number;
 
   /**
+   * The message represented as an arraybuffer.
+   *
+   * @property {ArrayBuffer}
+   */
+  buffer: ArrayBuffer;
+
+  /**
    * @param {string} type The type of message that is being sent.
    * @param {string} contents The actual contents of the message.
    */
@@ -37,6 +44,8 @@ export default class Message {
     this.contents = contents;
 
     this.timestamp = + new Date();
+
+    this.buffer = this.toBuffer();
   }
 
   /**
@@ -48,5 +57,18 @@ export default class Message {
     const message: Object = { type: this.type, contents: this.contents, timestamp: this.timestamp };
 
     return JSON.stringify(message);
+  }
+
+  /**
+   * Creates an array buffer of the stringified version of the message.
+   *
+   * @returns {ArrayBuffer} Returns the arraybuffer representation of the message.
+   */
+  toBuffer(): ArrayBuffer {
+    const encoder: TextEncoder = new TextEncoder();
+
+    const encoded: ArrayBuffer = encoder.encode(this.stringify());
+
+    return encoded;
   }
 }

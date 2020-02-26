@@ -46,13 +46,13 @@
     "express": "^4.17.1",
     "fastify": "^2.12.0",
     "fastify-static": "^2.6.0",
-    "gameguard": "^0.13.0",
+    "gameguard": "^0.13.1",
     "mocha": "^7.0.1",
     "rollup": "^1.31.1",
     "rollup-plugin-babel": "^4.3.3",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.2"
   },
   "dependencies": {
-    "hypergiant": "^3.0.4"
+    "hypergiant": "^3.0.5"
   }
 }
