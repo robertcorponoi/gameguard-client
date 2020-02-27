@@ -734,8 +734,7 @@ function () {
    * This signal is dispatched with the id that was assigned to this client.
    *
    * @private
-   *
-   * @property {Hypergiant}
+   * * @property {Hypergiant}
    */
 
   /**
@@ -855,25 +854,29 @@ function () {
   }, {
     key: "_onMessage",
     value: function _onMessage(message) {
-      var decoder = new TextDecoder();
-      var decoded = decoder.decode(message.data);
-      var parsed = JSON.parse(decoded);
-      var msg = new Message(parsed.type, parsed.contents);
+      var _this2 = this;
 
-      switch (msg.type) {
-        case 'latency-ping':
-          var latencyMessage = new Message('latency-pong', msg.contents);
+      message.data.text().then(function (text) {
+        var messageParsed = JSON.parse(text);
+        var msg = new Message(messageParsed.type, messageParsed.contents);
 
-          this._socket.send(latencyMessage.buffer);
+        switch (msg.type) {
+          case 'latency-ping':
+            var latencyMessage = new Message('latency-pong', msg.contents);
 
-          break;
+            _this2._socket.send(latencyMessage.buffer);
 
-        case 'latency':
-          this._latency = parseFloat(msg.contents);
+            break;
 
-        default:
-          this.messaged.dispatch(msg);
-      }
+          case 'latency':
+            _this2._latency = parseFloat(msg.contents);
+            break;
+
+          default:
+            _this2.messaged.dispatch(msg);
+
+        }
+      });
     }
     /**
      * When the WebSocket connection closes, we end the players connection to the game and notify them why, if a reason
