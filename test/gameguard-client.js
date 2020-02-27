@@ -498,6 +498,12 @@ function () {
    */
 
   /**
+   * The message represented as an arraybuffer.
+   *
+   * @property {ArrayBuffer}
+   */
+
+  /**
    * @param {string} type The type of message that is being sent.
    * @param {string} contents The actual contents of the message.
    */
@@ -510,9 +516,12 @@ function () {
 
     _defineProperty(this, "timestamp", void 0);
 
+    _defineProperty(this, "buffer", void 0);
+
     this.type = type;
     this.contents = contents;
     this.timestamp = +new Date();
+    this.buffer = this.toBuffer();
   }
   /**
    * Prepare this message to be sent by stringifying the contents of it.
@@ -530,6 +539,19 @@ function () {
         timestamp: this.timestamp
       };
       return JSON.stringify(message);
+    }
+    /**
+     * Creates an array buffer of the stringified version of the message.
+     *
+     * @returns {ArrayBuffer} Returns the arraybuffer representation of the message.
+     */
+
+  }, {
+    key: "toBuffer",
+    value: function toBuffer() {
+      var encoder = new TextEncoder();
+      var encoded = encoder.encode(this.stringify());
+      return encoded;
     }
   }]);
 
@@ -712,8 +734,7 @@ function () {
    * This signal is dispatched with the id that was assigned to this client.
    *
    * @private
-   *
-   * @property {Hypergiant}
+   * * @property {Hypergiant}
    */
 
   /**
@@ -818,7 +839,7 @@ function () {
 
       var message = new Message('player-connected', playerId);
 
-      this._socket.send(message.stringify());
+      this._socket.send(message.buffer);
 
       this.connected.dispatch(playerId);
     }
@@ -833,23 +854,29 @@ function () {
   }, {
     key: "_onMessage",
     value: function _onMessage(message) {
-      var parsed = JSON.parse(message.data);
-      var msg = new Message(parsed.type, parsed.contents);
+      var _this2 = this;
 
-      switch (msg.type) {
-        case 'latency-ping':
-          var latencyMessage = new Message('latency-pong', msg.contents);
+      message.data.text().then(function (text) {
+        var messageParsed = JSON.parse(text);
+        var msg = new Message(messageParsed.type, messageParsed.contents);
 
-          this._socket.send(latencyMessage.stringify());
+        switch (msg.type) {
+          case 'latency-ping':
+            var latencyMessage = new Message('latency-pong', msg.contents);
 
-          break;
+            _this2._socket.send(latencyMessage.buffer);
 
-        case 'latency':
-          this._latency = parseFloat(msg.contents);
+            break;
 
-        default:
-          this.messaged.dispatch(msg);
-      }
+          case 'latency':
+            _this2._latency = parseFloat(msg.contents);
+            break;
+
+          default:
+            _this2.messaged.dispatch(msg);
+
+        }
+      });
     }
     /**
      * When the WebSocket connection closes, we end the players connection to the game and notify them why, if a reason

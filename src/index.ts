@@ -43,8 +43,7 @@ export default class GameGuardClient {
    * This signal is dispatched with the id that was assigned to this client.
    *
    * @private
-   *
-   * @property {Hypergiant}
+   * * @property {Hypergiant}
    */
   private _connected: Hypergiant = new Hypergiant();
 
@@ -145,7 +144,7 @@ export default class GameGuardClient {
 
     const message: Message = new Message('player-connected', playerId);
 
-    this._socket.send(message.stringify());
+    this._socket.send(message.buffer);
 
     this.connected.dispatch(playerId);
   }
@@ -158,21 +157,25 @@ export default class GameGuardClient {
    * @param {string} message The message Object received from the server.
    */
   private _onMessage(message: any) {
-    const parsed: any = JSON.parse(message.data);
+    message.data.text()
+      .then((text: string) => {
+        const messageParsed = JSON.parse(text);
 
-    const msg: Message = new Message(parsed.type, parsed.contents);
+        const msg: Message = new Message(messageParsed.type, messageParsed.contents);
 
-    switch (msg.type) {
-      case 'latency-ping':
-        const latencyMessage = new Message('latency-pong', msg.contents);
+        switch (msg.type) {
+          case 'latency-ping':
+            const latencyMessage = new Message('latency-pong', msg.contents);
 
-        this._socket.send(latencyMessage.stringify());
-        break;
-      case 'latency':
-        this._latency = parseFloat(msg.contents);
-      default:
-        this.messaged.dispatch(msg);
-    }
+            this._socket.send(latencyMessage.buffer);
+            break;
+          case 'latency':
+            this._latency = parseFloat(msg.contents);
+            break;
+          default:
+            this.messaged.dispatch(msg);
+        }
+      });
   }
 
   /**
