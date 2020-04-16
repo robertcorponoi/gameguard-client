@@ -33,8 +33,7 @@ export default class GameGuardClient {
      * This signal is dispatched with the id that was assigned to this client.
      *
      * @private
-     *
-     * @property {Hypergiant}
+     * * @property {Hypergiant}
      */
     private _connected;
     /**

@@ -1,6 +1,6 @@
 {
   "name": "gameguard-client",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "The client-side companion to GameGuard",
   "scripts": {
     "tsconfig": "tsc --init --declaration --allowSyntheticDefaultImports --target esnext --outDir lib",
@@ -34,23 +34,23 @@
   "module": "gameguard-client.js",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.4",
+    "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-numeric-separator": "^7.8.3",
-    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
-    "@babel/preset-env": "^7.8.4",
-    "@babel/preset-typescript": "^7.8.3",
-    "@rollup/plugin-commonjs": "^11.0.2",
-    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
+    "@rollup/plugin-commonjs": "^11.1.0",
+    "@rollup/plugin-node-resolve": "^7.1.3",
     "chai": "^4.2.0",
     "express": "^4.17.1",
-    "fastify": "^2.12.0",
+    "fastify": "^2.13.1",
     "fastify-static": "^2.6.0",
-    "gameguard": "^0.13.1",
-    "mocha": "^7.1.0",
-    "rollup": "^1.31.1",
-    "rollup-plugin-babel": "^4.3.3",
-    "typescript": "^3.8.2"
+    "gameguard": "^0.14.0",
+    "mocha": "^7.1.1",
+    "rollup": "^2.6.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "hypergiant": "^3.0.5"

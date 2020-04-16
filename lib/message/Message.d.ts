@@ -23,6 +23,12 @@ export default class Message {
      */
     timestamp: number;
     /**
+     * The message represented as an arraybuffer.
+     *
+     * @property {ArrayBuffer}
+     */
+    buffer: ArrayBuffer;
+    /**
      * @param {string} type The type of message that is being sent.
      * @param {string} contents The actual contents of the message.
      */
@@ -33,4 +39,10 @@ export default class Message {
      * @returns {string} Returns the stringified version of this message.
      */
     stringify(): string;
+    /**
+     * Creates an array buffer of the stringified version of the message.
+     *
+     * @returns {ArrayBuffer} Returns the arraybuffer representation of the message.
+     */
+    toBuffer(): ArrayBuffer;
 }

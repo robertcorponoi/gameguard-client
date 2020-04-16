@@ -1,3 +1,6 @@
+## 0.14.1 / 2020-04-16
+- [MISC] Updated out-of-date dependencies to their latest versions which also fixed all possible fixed security vulnerabilities.
+
 ## 0.14.0 / 2020-02-26
 - [FEATURE] Messages now get sent and read as binary.
 - [MISC] Made sure the client works with the latest version of gameguard.
