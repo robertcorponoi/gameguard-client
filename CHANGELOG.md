@@ -1,3 +1,10 @@
+## 1.0.0 / 2020-09-27
+- [FEATURE] Simplified the `Message` object by taking out the `toString` and `toBinary` methods and moving them to the utility file.
+- [FEATURE] Removed the `ClientData` and `Cookies` modules and replaced them with `js-cookie` to make it more simple and efficient.
+- [TESTS] Improved and added tests.
+- [MISC] Changed typescript out dir to `build` instead of `lib` to match GameGuard server.
+- [MISC] Added npm scripts to improve build process.
+
 ## 0.14.1 / 2020-04-16
 - [MISC] Updated out-of-date dependencies to their latest versions which also fixed all possible fixed security vulnerabilities.
 

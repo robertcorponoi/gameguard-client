@@ -78,9 +78,7 @@ function _defineProperty$1(obj, key, value) {
 
 var defineProperty = _defineProperty$1;
 
-var Task =
-/*#__PURE__*/
-function () {
+var Task = /*#__PURE__*/function () {
   /**
    * The method to be called when processing this task.
    * 
@@ -90,23 +88,23 @@ function () {
   /**
    * Indicates whether this task will only run once before being deleted or not.
    * 
-    * @private
-    * 
+   * @private
+   * 
    * @property {boolean}
    */
 
   /**
    * If true this indicates to Hypergiant that it needs to be deleted on the next pass.
-    * 
-    * @private
+      * 
+      * @private
    * 
    * @property {boolean}
    */
 
   /**
    * The number of times that this task has been called.
-    * 
-    * @private
+      * 
+      * @private
    * 
    * @property {number}
    */
@@ -193,17 +191,15 @@ function () {
 /**
  * Hypergiant is used to create signals that run a task when emitted.
  *
- * One of the biggest advtantages that signals have over native JavaScript events is that they don't rely 
- * on correct typing.
+ * One of the biggest advtantages that signals have over native JavaScript 
+ * events is that they don't rely on correct typing.
  */
 
-var Hypergiant =
-/*#__PURE__*/
-function () {
+var Hypergiant = /*#__PURE__*/function () {
   function Hypergiant() {
     classCallCheck(this, Hypergiant);
 
-    defineProperty(this, "_tasks", new Set());
+    defineProperty(this, "_tasks", new Array());
   }
 
   createClass(Hypergiant, [{
@@ -220,7 +216,7 @@ function () {
     value: function add(fn) {
       var once = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-      this._tasks.add(new Task(fn, once));
+      this._tasks.push(new Task(fn, once));
 
       return this;
     }
@@ -234,29 +230,13 @@ function () {
   }, {
     key: "dispatch",
     value: function dispatch() {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+      for (var i = 0; i < this.tasks.length; ++i) {
+        var task = this.tasks[i]; // For each task we run it with th eprovided arguments.
 
-      try {
-        for (var _iterator = this._tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var task = _step.value;
-          task.run.apply(task, arguments);
-          if (task["delete"]) this._tasks["delete"](task);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
+        task.run.apply(task, arguments); // If the task is set to be deleted, then we have to get the index of the current
+        // task and then splice it.
+
+        if (task["delete"]) this.tasks.splice(i, 1);
       }
     }
     /**
@@ -270,37 +250,9 @@ function () {
   }, {
     key: "remove",
     value: function remove(fn) {
-      var fnToString = fn.toString();
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this._tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var task = _step2.value;
-          var taskFnToString = task.fn.toString();
-
-          if (fnToString === taskFnToString) {
-            this._tasks["delete"](task);
-
-            break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-            _iterator2["return"]();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
+      this._tasks = this.tasks.filter(function (task) {
+        return task.fn.toString() != fn.toString();
+      });
       return this;
     }
     /**
@@ -312,8 +264,7 @@ function () {
   }, {
     key: "removeAll",
     value: function removeAll() {
-      this._tasks.clear();
-
+      this._tasks = [];
       return this;
     }
     /**
@@ -330,36 +281,10 @@ function () {
   }, {
     key: "pause",
     value: function pause(fn) {
-      var fnToString = fn.toString();
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = this._tasks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var task = _step3.value;
-          var taskFnToString = task.fn.toString();
-
-          if (!task.paused && fnToString === taskFnToString) {
-            task.paused = true;
-            break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-            _iterator3["return"]();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-
+      var taskToPause = this.tasks.find(function (task) {
+        return !task.paused && fn.toString() === task.fn.toString();
+      });
+      if (taskToPause) taskToPause.paused = true;
       return this;
     }
     /**
@@ -373,36 +298,10 @@ function () {
   }, {
     key: "resume",
     value: function resume(fn) {
-      var fnToString = fn.toString();
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
-
-      try {
-        for (var _iterator4 = this._tasks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var task = _step4.value;
-          var taskFnToString = task.fn.toString();
-
-          if (task.paused && fnToString === taskFnToString) {
-            task.paused = false;
-            break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-            _iterator4["return"]();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
-        }
-      }
-
+      var taskToResume = this.tasks.find(function (task) {
+        return task.paused && fn.toString() === task.fn.toString();
+      });
+      if (taskToResume) taskToResume.paused = false;
       return this;
     }
     /**
@@ -416,37 +315,10 @@ function () {
   }, {
     key: "noop",
     value: function noop(fn) {
-      var fnToString = fn.toString();
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
-
-      try {
-        for (var _iterator5 = this._tasks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var task = _step5.value;
-          var taskFnToString = task.fn.toString();
-
-          if (fnToString === taskFnToString) {
-            task.fn = function () {};
-
-            break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
-            _iterator5["return"]();
-          }
-        } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
-          }
-        }
-      }
-
+      var taskToNoop = this.tasks.find(function (task) {
+        return fn.toString() === task.fn.toString();
+      });
+      if (taskToNoop) taskToNoop.fn = function () {};
       return this;
     }
   }, {
@@ -455,7 +327,7 @@ function () {
     /**
      * Returns the tasks created for this signal.
      * 
-     * @returns {Set<Task>}
+     * @returns {Array<Task>}
      */
     get: function get() {
       return this._tasks;
@@ -469,7 +341,7 @@ function () {
   }, {
     key: "numTasks",
     get: function get() {
-      return this._tasks.size;
+      return this._tasks.length;
     }
   }]);
 
@@ -477,86 +349,41 @@ function () {
 }();
 
 var Message =
-/*#__PURE__*/
-function () {
-  /**
-   * The type of message being sent.
-   * 
-   * @property {string}
-   */
+/**
+ * The type of message the message is.
+ * 
+ * @property {string}
+ */
 
-  /**
-   * The actual contents of the message.
-   * 
-   * @property {string}
-   */
+/**
+ * The contents of the message.
+ * 
+ * @property {string}
+ */
 
-  /**
-   * The timestamp of when this message was created and sent.
-   * 
-   * @property {number}
-   */
+/**
+ * The timestamp of when the message was created.
+ * 
+ * @property {number}
+ */
 
-  /**
-   * The message represented as an arraybuffer.
-   *
-   * @property {ArrayBuffer}
-   */
+/**
+ * @param {string} type The type of message that is being sent.
+ * @param {string} contents The actual contents of the message.
+ */
+function Message(type, contents) {
+  _classCallCheck(this, Message);
 
-  /**
-   * @param {string} type The type of message that is being sent.
-   * @param {string} contents The actual contents of the message.
-   */
-  function Message(type, contents) {
-    _classCallCheck(this, Message);
+  _defineProperty(this, "type", void 0);
 
-    _defineProperty(this, "type", void 0);
+  _defineProperty(this, "contents", void 0);
 
-    _defineProperty(this, "contents", void 0);
+  _defineProperty(this, "timestamp", void 0);
 
-    _defineProperty(this, "timestamp", void 0);
-
-    _defineProperty(this, "buffer", void 0);
-
-    this.type = type;
-    this.contents = contents;
-    this.timestamp = +new Date();
-    this.buffer = this.toBuffer();
-  }
-  /**
-   * Prepare this message to be sent by stringifying the contents of it.
-   * 
-   * @returns {string} Returns the stringified version of this message.
-   */
-
-
-  _createClass(Message, [{
-    key: "stringify",
-    value: function stringify() {
-      var message = {
-        type: this.type,
-        contents: this.contents,
-        timestamp: this.timestamp
-      };
-      return JSON.stringify(message);
-    }
-    /**
-     * Creates an array buffer of the stringified version of the message.
-     *
-     * @returns {ArrayBuffer} Returns the arraybuffer representation of the message.
-     */
-
-  }, {
-    key: "toBuffer",
-    value: function toBuffer() {
-      var encoder = new TextEncoder();
-      var encoded = encoder.encode(this.stringify());
-      return encoded;
-    }
-  }]);
-
-  return Message;
-}();
+  this.type = type;
+  this.contents = contents;
+  this.timestamp = +new Date();
+};
 
 var Options =
 /**
@@ -568,144 +395,246 @@ var Options =
  */
 
 /**
- * @param {Object} options The initialization parameters passed to the GameGuard client instance. 
- * @param {boolean} [options.secure=false] Indicates whether the websocket will connect to the server with a secure connection or not.
+ * @param {Object} options The options passed to GameGuardClient on initialization.
+ * @param {boolean} [options.useSecure=false] Indicates whether the websocket will connect to the server with a secure connection or not.
  */
 function Options(options) {
   _classCallCheck(this, Options);
 
-  _defineProperty(this, "secure", false);
+  _defineProperty(this, "useSecure", false);
 
   Object.assign(this, options);
 };
 
+function createCommonjsModule(fn, basedir, module) {
+	return module = {
+		path: basedir,
+		exports: {},
+		require: function (path, base) {
+			return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+		}
+	}, fn(module, module.exports), module.exports;
+}
+
+function commonjsRequire () {
+	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+}
+
+var js_cookie = createCommonjsModule(function (module, exports) {
+(function (factory) {
+	var registeredInModuleLoader;
+	{
+		module.exports = factory();
+		registeredInModuleLoader = true;
+	}
+	if (!registeredInModuleLoader) {
+		var OldCookies = window.Cookies;
+		var api = window.Cookies = factory();
+		api.noConflict = function () {
+			window.Cookies = OldCookies;
+			return api;
+		};
+	}
+}(function () {
+	function extend () {
+		var i = 0;
+		var result = {};
+		for (; i < arguments.length; i++) {
+			var attributes = arguments[ i ];
+			for (var key in attributes) {
+				result[key] = attributes[key];
+			}
+		}
+		return result;
+	}
+
+	function decode (s) {
+		return s.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
+	}
+
+	function init (converter) {
+		function api() {}
+
+		function set (key, value, attributes) {
+			if (typeof document === 'undefined') {
+				return;
+			}
+
+			attributes = extend({
+				path: '/'
+			}, api.defaults, attributes);
+
+			if (typeof attributes.expires === 'number') {
+				attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
+			}
+
+			// We're using "expires" because "max-age" is not supported by IE
+			attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+			try {
+				var result = JSON.stringify(value);
+				if (/^[\{\[]/.test(result)) {
+					value = result;
+				}
+			} catch (e) {}
+
+			value = converter.write ?
+				converter.write(value, key) :
+				encodeURIComponent(String(value))
+					.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+
+			key = encodeURIComponent(String(key))
+				.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent)
+				.replace(/[\(\)]/g, escape);
+
+			var stringifiedAttributes = '';
+			for (var attributeName in attributes) {
+				if (!attributes[attributeName]) {
+					continue;
+				}
+				stringifiedAttributes += '; ' + attributeName;
+				if (attributes[attributeName] === true) {
+					continue;
+				}
+
+				// Considers RFC 6265 section 5.2:
+				// ...
+				// 3.  If the remaining unparsed-attributes contains a %x3B (";")
+				//     character:
+				// Consume the characters of the unparsed-attributes up to,
+				// not including, the first %x3B (";") character.
+				// ...
+				stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+			}
+
+			return (document.cookie = key + '=' + value + stringifiedAttributes);
+		}
+
+		function get (key, json) {
+			if (typeof document === 'undefined') {
+				return;
+			}
+
+			var jar = {};
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all.
+			var cookies = document.cookie ? document.cookie.split('; ') : [];
+			var i = 0;
+
+			for (; i < cookies.length; i++) {
+				var parts = cookies[i].split('=');
+				var cookie = parts.slice(1).join('=');
+
+				if (!json && cookie.charAt(0) === '"') {
+					cookie = cookie.slice(1, -1);
+				}
+
+				try {
+					var name = decode(parts[0]);
+					cookie = (converter.read || converter)(cookie, name) ||
+						decode(cookie);
+
+					if (json) {
+						try {
+							cookie = JSON.parse(cookie);
+						} catch (e) {}
+					}
+
+					jar[name] = cookie;
+
+					if (key === name) {
+						break;
+					}
+				} catch (e) {}
+			}
+
+			return key ? jar[key] : jar;
+		}
+
+		api.set = set;
+		api.get = function (key) {
+			return get(key, false /* read as raw */);
+		};
+		api.getJSON = function (key) {
+			return get(key, true /* read as json */);
+		};
+		api.remove = function (key, attributes) {
+			set(key, '', extend(attributes, {
+				expires: -1
+			}));
+		};
+
+		api.defaults = {};
+
+		api.withConverter = init;
+
+		return api;
+	}
+
+	return init(function () {});
+}));
+});
+
 /**
- * Provides methods to get, set, or edit data in cookies.
+* Encodes a message from a message object to an ArrayBuffer.
+* 
+* @param {Message} message The message to encode.
+* 
+* @returns {ArrayBuffer} Returns the message as an ArrayBuffer.
+*/
+function messageToBuffer(message) {
+  var encoder = new TextEncoder();
+  var type = message.type,
+      contents = message.contents,
+      timestamp = message.timestamp;
+  var stringified = JSON.stringify({
+    type: type,
+    contents: contents,
+    timestamp: timestamp
+  });
+  return encoder.encode(stringified);
+}
+/**
+ * Checks to see if a player is an existing player by checking for a cookie
+ * containing their player id. If no existing player id is found, then a new
+ * one is created for the player.
+ * 
+ * @returns {string} Returns an existing or new player id.
  */
 
-var cookies = {
-  /**
-   * Gets the value for a specified cookie name.
-   * 
-   * @param {string} name The name of the cookie to get.
-   * 
-   * @returns {string} Returns the value of the cookie or an empty string if the cookie does not exist.
-   */
-  get: function get(name) {
-    var cname = "".concat(name, "=");
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = ca[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var c = _step.value;
-
-        while (c.charAt(0) == ' ') {
-          c = c.substring(1);
-        }
-
-        if (c.indexOf(cname) == 0) return c.substring(cname.length, c.length);
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-          _iterator["return"]();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-
-    return '';
-  },
-
-  /**
-   * Sets a new cookie with the desired name, value, and expiration date in days.
-   * 
-   * @param {string} name The name of the cookie to set.
-   * @param {string} value The value of the cookie to set.
-   * @param {number} [daysToExpire=365] The number of days until this cookie expires.
-   */
-  set: function set(name, value) {
-    var daysToExpire = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 365;
-    var d = new Date();
-    d.setTime(d.getTime() + daysToExpire * 24 * 60 * 60 * 1000);
-    var expires = "expires=".concat(d.toUTCString());
-    document.cookie = "".concat(name, "=").concat(value, ";").concat(expires, ";path=/");
-  }
-};
-
+function getPlayerId() {
+  var existingPlayerId = js_cookie.get('gameguardPlayerId');
+  if (existingPlayerId) return existingPlayerId;
+  var newPlayerId = generatePlayerId();
+  js_cookie.set('gameguardPlayerId', newPlayerId, {
+    expires: 365,
+    path: ''
+  });
+  return newPlayerId;
+}
 /**
- * Generates various types of uuids to specifications.
+ * Generates a v4 compliant uuid to use for player ids.
+ * 
+ * This is based off the answer from: https://stackoverflow.com/a/2117523/4274475
+ * 
+ * @returns {string} Returns a valid v4 uuid.
  */
 
-var uuid = {
-  /**
-   * Generates a v4 compliant uuid.
-   * 
-   * This is derived from this post: https://stackoverflow.com/a/2117523/4274475
-   * 
-   * @returns {string} Returns a valid v4 uuid.
-   */
-  v4: function v4() {
-    // @ts-ignore
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
-      return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
-    });
-  }
-};
+function generatePlayerId() {
+  // @ts-ignore
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
+    return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+  });
+}
 
 /**
- * Provides methods to set, get, and work with data stored on the client side in cookies.
+ * GameGuardClient communicates with the server to manage the player and their 
+ * data.
  */
 
-var ClientData =
-/*#__PURE__*/
-function () {
-  function ClientData() {
-    _classCallCheck(this, ClientData);
-  }
-
-  _createClass(ClientData, [{
-    key: "getPlayerId",
-
-    /**
-     * Gets the GameGuard player id from the current player, if it doesn't exist then a player id will be assigned to the player and returned.
-     * 
-     * @returns {string} Returns the player id.
-     */
-    value: function getPlayerId() {
-      var playerId = cookies.get('gameguardPlayerId');
-
-      if (!playerId) {
-        playerId = uuid.v4();
-        cookies.set('gameguardPlayerId', playerId);
-      }
-
-      return playerId;
-    }
-  }]);
-
-  return ClientData;
-}();
-
-/**
- * The GameGuard client is used to establish a connection to the server send player info.
- */
-
-var GameGuardClient =
-/*#__PURE__*/
-function () {
+var GameGuardClient = /*#__PURE__*/function () {
   /**
-   * A reference to this client's options.
+   * The options passed to GameGuardClient on initialization.
    * 
    * @private
    * 
@@ -713,7 +642,7 @@ function () {
    */
 
   /**
-  * A reference to this client's WebSocket connection.
+  * The GameGuardClient instance WebSocket connection.
   * 
   * @private
   * 
@@ -721,34 +650,27 @@ function () {
   */
 
   /**
-   * A reference to the ClientData module.
-   * 
-   * @private
-   * 
-   * @property {ClientData}
-   */
-
-  /**
    * The signal that is dispatched when the client is assigned a player id.
    *
    * This signal is dispatched with the id that was assigned to this client.
    *
    * @private
-   * * @property {Hypergiant}
+   * 
+   * @property {Hypergiant}
    */
 
   /**
-   * The signal that is dispatched when the client receives a message from the server.
+   * The signal that is dispatched when the client receives a message from 
+   * the GameGuard server.
    *
    * This signal is dispatched with the message that was sent to the client.
-   *
-   * @private
    *
    * @property {Hypergiant}
    */
 
   /**
-   * The signal that is dispatched when the client's connection with the server is ended.
+   * The signal that is dispatched when the client's connection with the 
+   * GameGuard server is ended.
    *
    * This signal is dispatched with the close code and reason.
    *
@@ -758,7 +680,7 @@ function () {
    */
 
   /**
-   * This client's latency to the server, in milliseconds.
+   * This client's latency to the GameGuard server, in milliseconds.
    * 
    * @private
    * 
@@ -767,7 +689,7 @@ function () {
 
   /**
    * @param {Object} [options] The initialization parameters passed to this instance.
-   * @param {boolean} [options.secure=false] Indicates whether the websocket will connect to the server with a secure connection or not.
+   * @param {boolean} [options.useSecure=false] Indicates whether the websocket will connect to the server with a secure connection or not.
    */
   function GameGuardClient() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -777,8 +699,6 @@ function () {
     _defineProperty(this, "_options", void 0);
 
     _defineProperty(this, "_socket", void 0);
-
-    _defineProperty(this, "_clientData", new ClientData());
 
     _defineProperty(this, "_connected", new Hypergiant());
 
@@ -790,7 +710,7 @@ function () {
 
     this._options = new Options(options);
 
-    this._boot();
+    this._connectToServer();
   }
   /**
    * Returns the connected signal.
@@ -800,99 +720,122 @@ function () {
 
 
   _createClass(GameGuardClient, [{
-    key: "_boot",
+    key: "_connectToServer",
 
     /**
-     * Initialize the WebSocket connection and all of the events that we need to respond to.
+     * Create the WebSocket connection and attach the methods that respond to the
+     * `open`, `message`, and `close` events.
      * 
      * @private
      */
-    value: function _boot() {
+    value: function _connectToServer() {
       var _this = this;
 
-      var wsProtocol = this._options.secure ? 'wss' : 'ws';
-      this._socket = new WebSocket("".concat(wsProtocol, "://").concat(window.location.host, "/"));
+      // If the `useSecure` option is set to true when we need to make sure that
+      // the `wss` protocol is used.
+      var wsProtocol = this._options.useSecure ? 'wss' : 'ws'; // Create the WebSocket connection by combining the protocol from above
+      // with the current page (since it's where the game should be).
+
+      this._socket = new WebSocket("".concat(wsProtocol, "://").concat(window.location.host, "/")); // Define the methods that should run when the `open`, `message`, and
+      // `close` events are emitted.
 
       this._socket.addEventListener('open', function () {
-        return _this._onOpen();
+        return _this._onopen();
       });
 
       this._socket.addEventListener('message', function (message) {
-        return _this._onMessage(message);
+        return _this._onmessage(message);
       });
 
-      this._socket.addEventListener('close', function (ev) {
-        return _this._onClose(ev);
+      this._socket.addEventListener('close', function (event) {
+        return _this._onclose(event);
       });
     }
     /**
-     * When the WebSocket connection opens, we check to see if they are an existing GameGuard player using cookies
-     * and if they are not then they are assigned a new GameGuard player id.
+     * Called when the connection to the GameGuard server is created and it sends
+     * the player's id to the server and lastly dispatches the `connected` signal
+     * to let the user know that they have successfully connected.
      * 
      * @private
      */
 
   }, {
-    key: "_onOpen",
-    value: function _onOpen() {
-      var playerId = this._clientData.getPlayerId();
+    key: "_onopen",
+    value: function _onopen() {
+      // Get the existing player id if there is a cookie set, otherwise we create
+      // a new player id.
+      var playerId = getPlayerId(); // Create the player-connected message that the GameGuard server expects to
+      // receive and send it with the player's id.
 
       var message = new Message('player-connected', playerId);
 
-      this._socket.send(message.buffer);
+      this._socket.send(messageToBuffer(message)); // Finally we dispatch the `connected` signal with the player's id.
+
 
       this.connected.dispatch(playerId);
     }
     /**
-     * When the client receives a message from the player, dispatch a signal with the message that was sent.
+     * When the client receives a message from the GameGuard server, we first
+     * check to see if it's an internal message that we need to respond to. If
+     * it's not a message for us, then we dispatch the `messaged` signal so that
+     * the user can respond to the message.
      * 
      * @private
      * 
-     * @param {string} message The message Object received from the server.
+     * @param {MessageEvent} message The message event received from the GameGuard server.
      */
 
   }, {
-    key: "_onMessage",
-    value: function _onMessage(message) {
+    key: "_onmessage",
+    value: function _onmessage(message) {
       var _this2 = this;
 
       message.data.text().then(function (text) {
-        var messageParsed = JSON.parse(text);
-        var msg = new Message(messageParsed.type, messageParsed.contents);
+        // Decode the message from an ArrayBuffer to a Message object.
+        var parsed = JSON.parse(text);
+        var messageDecoded = new Message(parsed.type, parsed.contents);
 
-        switch (msg.type) {
+        switch (messageDecoded.type) {
           case 'latency-ping':
-            var latencyMessage = new Message('latency-pong', msg.contents);
+            // The GameGuard server has sent a request for a timestamp from the GameGuardClient.
+            // This is used to create a get a roundtrip timestamp so that we can get the latency
+            // from the GameGuard server to the client.
+            var latencyPongMessage = new Message('latency-pong', messageDecoded.contents);
 
-            _this2._socket.send(latencyMessage.buffer);
+            _this2._socket.send(messageToBuffer(latencyPongMessage));
 
             break;
 
           case 'latency':
-            _this2._latency = parseFloat(msg.contents);
+            // The GameGuard server has sent over the roundtrip latency so we can assign it to
+            // the `latency` property to be used by the client.
+            _this2._latency = parseFloat(messageDecoded.contents);
             break;
 
           default:
-            _this2.messaged.dispatch(msg);
+            // Lastly, the message is not internal and is meant for the client so we pass it on
+            // over to them to handle it.
+            _this2.messaged.dispatch(messageDecoded);
 
         }
       });
     }
     /**
-     * When the WebSocket connection closes, we end the players connection to the game and notify them why, if a reason
-     * was provided.
+     * When the client's connection to the GameGuard server is closed, we dispatch
+     * the `disconnected` signal which could be used by the user to stop the game
+     * for the client.
      * 
      * @private
      * 
-     * @property {Event} ev The WebSocket close event Object.
+     * @property {Event} event The WebSocket close event Object.
      */
 
   }, {
-    key: "_onClose",
-    value: function _onClose(ev) {
+    key: "_onclose",
+    value: function _onclose(event) {
       this.disconnected.dispatch({
-        code: ev.code,
-        reason: ev.reason
+        code: event.code,
+        reason: event.reason
       });
     }
   }, {
