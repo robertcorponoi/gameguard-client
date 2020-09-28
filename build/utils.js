@@ -1,0 +1,69 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.messageToBuffer = messageToBuffer;
+exports.getPlayerId = getPlayerId;
+
+var _jsCookie = _interopRequireDefault(require("js-cookie"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+/**
+* Encodes a message from a message object to an ArrayBuffer.
+* 
+* @param {Message} message The message to encode.
+* 
+* @returns {ArrayBuffer} Returns the message as an ArrayBuffer.
+*/
+function messageToBuffer(message) {
+  var encoder = new TextEncoder();
+  var type = message.type,
+      contents = message.contents,
+      timestamp = message.timestamp;
+  var stringified = JSON.stringify({
+    type: type,
+    contents: contents,
+    timestamp: timestamp
+  });
+  return encoder.encode(stringified);
+}
+/**
+ * Checks to see if a player is an existing player by checking for a cookie
+ * containing their player id. If no existing player id is found, then a new
+ * one is created for the player.
+ * 
+ * @returns {string} Returns an existing or new player id.
+ */
+
+
+function getPlayerId() {
+  var existingPlayerId = _jsCookie["default"].get('gameguardPlayerId');
+
+  if (existingPlayerId) return existingPlayerId;
+  var newPlayerId = generatePlayerId();
+
+  _jsCookie["default"].set('gameguardPlayerId', newPlayerId, {
+    expires: 365,
+    path: ''
+  });
+
+  return newPlayerId;
+}
+/**
+ * Generates a v4 compliant uuid to use for player ids.
+ * 
+ * This is based off the answer from: https://stackoverflow.com/a/2117523/4274475
+ * 
+ * @returns {string} Returns a valid v4 uuid.
+ */
+
+
+function generatePlayerId() {
+  // @ts-ignore
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
+    return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy91dGlscy50cyJdLCJuYW1lcyI6WyJtZXNzYWdlVG9CdWZmZXIiLCJtZXNzYWdlIiwiZW5jb2RlciIsIlRleHRFbmNvZGVyIiwidHlwZSIsImNvbnRlbnRzIiwidGltZXN0YW1wIiwic3RyaW5naWZpZWQiLCJKU09OIiwic3RyaW5naWZ5IiwiZW5jb2RlIiwiZ2V0UGxheWVySWQiLCJleGlzdGluZ1BsYXllcklkIiwiQ29va2llcyIsImdldCIsIm5ld1BsYXllcklkIiwiZ2VuZXJhdGVQbGF5ZXJJZCIsInNldCIsImV4cGlyZXMiLCJwYXRoIiwicmVwbGFjZSIsImMiLCJjcnlwdG8iLCJnZXRSYW5kb21WYWx1ZXMiLCJVaW50OEFycmF5IiwidG9TdHJpbmciXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7OztBQUVBOzs7O0FBR0E7Ozs7Ozs7QUFPTyxTQUFTQSxlQUFULENBQXlCQyxPQUF6QixFQUF3RDtBQUM3RCxNQUFNQyxPQUFPLEdBQUcsSUFBSUMsV0FBSixFQUFoQjtBQUQ2RCxNQUVyREMsSUFGcUQsR0FFdkJILE9BRnVCLENBRXJERyxJQUZxRDtBQUFBLE1BRS9DQyxRQUYrQyxHQUV2QkosT0FGdUIsQ0FFL0NJLFFBRitDO0FBQUEsTUFFckNDLFNBRnFDLEdBRXZCTCxPQUZ1QixDQUVyQ0ssU0FGcUM7QUFJN0QsTUFBTUMsV0FBVyxHQUFHQyxJQUFJLENBQUNDLFNBQUwsQ0FBZTtBQUFFTCxJQUFBQSxJQUFJLEVBQUpBLElBQUY7QUFBUUMsSUFBQUEsUUFBUSxFQUFSQSxRQUFSO0FBQWtCQyxJQUFBQSxTQUFTLEVBQVRBO0FBQWxCLEdBQWYsQ0FBcEI7QUFDQSxTQUFPSixPQUFPLENBQUNRLE1BQVIsQ0FBZUgsV0FBZixDQUFQO0FBQ0Q7QUFFRDs7Ozs7Ozs7O0FBT08sU0FBU0ksV0FBVCxHQUErQjtBQUNwQyxNQUFNQyxnQkFBZ0IsR0FBR0MscUJBQVFDLEdBQVIsQ0FBWSxtQkFBWixDQUF6Qjs7QUFDQSxNQUFJRixnQkFBSixFQUFzQixPQUFPQSxnQkFBUDtBQUV0QixNQUFNRyxXQUFXLEdBQUdDLGdCQUFnQixFQUFwQzs7QUFDQUgsdUJBQVFJLEdBQVIsQ0FBWSxtQkFBWixFQUFpQ0YsV0FBakMsRUFBOEM7QUFBRUcsSUFBQUEsT0FBTyxFQUFFLEdBQVg7QUFBZ0JDLElBQUFBLElBQUksRUFBRTtBQUF0QixHQUE5Qzs7QUFDQSxTQUFPSixXQUFQO0FBQ0Q7QUFFRDs7Ozs7Ozs7O0FBT0EsU0FBU0MsZ0JBQVQsR0FBb0M7QUFDbEM7QUFDQSxTQUFPLENBQUMsQ0FBQyxHQUFELElBQVEsQ0FBQyxHQUFULEdBQWUsQ0FBQyxHQUFoQixHQUFzQixDQUFDLEdBQXZCLEdBQTZCLENBQUMsSUFBL0IsRUFBcUNJLE9BQXJDLENBQTZDLFFBQTdDLEVBQXVELFVBQUFDLENBQUM7QUFBQSxXQUM3RCxDQUFDQSxDQUFDLEdBQUdDLE1BQU0sQ0FBQ0MsZUFBUCxDQUF1QixJQUFJQyxVQUFKLENBQWUsQ0FBZixDQUF2QixFQUEwQyxDQUExQyxJQUErQyxNQUFNSCxDQUFDLEdBQUcsQ0FBOUQsRUFBaUVJLFFBQWpFLENBQTBFLEVBQTFFLENBRDZEO0FBQUEsR0FBeEQsQ0FBUDtBQUdEIiwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBzdHJpY3QnXHJcblxyXG5pbXBvcnQgQ29va2llcyBmcm9tICdqcy1jb29raWUnO1xyXG5pbXBvcnQgTWVzc2FnZSBmcm9tICcuL01lc3NhZ2UnO1xyXG5cclxuLyoqXHJcbiogRW5jb2RlcyBhIG1lc3NhZ2UgZnJvbSBhIG1lc3NhZ2Ugb2JqZWN0IHRvIGFuIEFycmF5QnVmZmVyLlxyXG4qIFxyXG4qIEBwYXJhbSB7TWVzc2FnZX0gbWVzc2FnZSBUaGUgbWVzc2FnZSB0byBlbmNvZGUuXHJcbiogXHJcbiogQHJldHVybnMge0FycmF5QnVmZmVyfSBSZXR1cm5zIHRoZSBtZXNzYWdlIGFzIGFuIEFycmF5QnVmZmVyLlxyXG4qL1xyXG5leHBvcnQgZnVuY3Rpb24gbWVzc2FnZVRvQnVmZmVyKG1lc3NhZ2U6IE1lc3NhZ2UpOiBBcnJheUJ1ZmZlciB7XHJcbiAgY29uc3QgZW5jb2RlciA9IG5ldyBUZXh0RW5jb2RlcigpO1xyXG4gIGNvbnN0IHsgdHlwZSwgY29udGVudHMsIHRpbWVzdGFtcCB9ID0gbWVzc2FnZTtcclxuXHJcbiAgY29uc3Qgc3RyaW5naWZpZWQgPSBKU09OLnN0cmluZ2lmeSh7IHR5cGUsIGNvbnRlbnRzLCB0aW1lc3RhbXAgfSk7XHJcbiAgcmV0dXJuIGVuY29kZXIuZW5jb2RlKHN0cmluZ2lmaWVkKTtcclxufVxyXG5cclxuLyoqXHJcbiAqIENoZWNrcyB0byBzZWUgaWYgYSBwbGF5ZXIgaXMgYW4gZXhpc3RpbmcgcGxheWVyIGJ5IGNoZWNraW5nIGZvciBhIGNvb2tpZVxyXG4gKiBjb250YWluaW5nIHRoZWlyIHBsYXllciBpZC4gSWYgbm8gZXhpc3RpbmcgcGxheWVyIGlkIGlzIGZvdW5kLCB0aGVuIGEgbmV3XHJcbiAqIG9uZSBpcyBjcmVhdGVkIGZvciB0aGUgcGxheWVyLlxyXG4gKiBcclxuICogQHJldHVybnMge3N0cmluZ30gUmV0dXJucyBhbiBleGlzdGluZyBvciBuZXcgcGxheWVyIGlkLlxyXG4gKi9cclxuZXhwb3J0IGZ1bmN0aW9uIGdldFBsYXllcklkKCk6IHN0cmluZyB7XHJcbiAgY29uc3QgZXhpc3RpbmdQbGF5ZXJJZCA9IENvb2tpZXMuZ2V0KCdnYW1lZ3VhcmRQbGF5ZXJJZCcpO1xyXG4gIGlmIChleGlzdGluZ1BsYXllcklkKSByZXR1cm4gZXhpc3RpbmdQbGF5ZXJJZDtcclxuXHJcbiAgY29uc3QgbmV3UGxheWVySWQgPSBnZW5lcmF0ZVBsYXllcklkKCk7XHJcbiAgQ29va2llcy5zZXQoJ2dhbWVndWFyZFBsYXllcklkJywgbmV3UGxheWVySWQsIHsgZXhwaXJlczogMzY1LCBwYXRoOiAnJyB9KTtcclxuICByZXR1cm4gbmV3UGxheWVySWQ7XHJcbn1cclxuXHJcbi8qKlxyXG4gKiBHZW5lcmF0ZXMgYSB2NCBjb21wbGlhbnQgdXVpZCB0byB1c2UgZm9yIHBsYXllciBpZHMuXHJcbiAqIFxyXG4gKiBUaGlzIGlzIGJhc2VkIG9mZiB0aGUgYW5zd2VyIGZyb206IGh0dHBzOi8vc3RhY2tvdmVyZmxvdy5jb20vYS8yMTE3NTIzLzQyNzQ0NzVcclxuICogXHJcbiAqIEByZXR1cm5zIHtzdHJpbmd9IFJldHVybnMgYSB2YWxpZCB2NCB1dWlkLlxyXG4gKi9cclxuZnVuY3Rpb24gZ2VuZXJhdGVQbGF5ZXJJZCgpOiBzdHJpbmcge1xyXG4gIC8vIEB0cy1pZ25vcmVcclxuICByZXR1cm4gKFsxZTddICsgLTFlMyArIC00ZTMgKyAtOGUzICsgLTFlMTEpLnJlcGxhY2UoL1swMThdL2csIGMgPT5cclxuICAgIChjIF4gY3J5cHRvLmdldFJhbmRvbVZhbHVlcyhuZXcgVWludDhBcnJheSgxKSlbMF0gJiAxNSA+PiBjIC8gNCkudG9TdHJpbmcoMTYpXHJcbiAgKTtcclxufSJdfQ==

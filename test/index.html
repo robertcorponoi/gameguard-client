@@ -1,30 +1,39 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>GameGuard Client Tests</title>
+  <title>GameGuardClient Tests</title>
 
+  <!-- Add the mocha stylesheet -->
   <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
 </head>
+
 <body>
+  <!-- The canvas that the test game will be displayed on -->
   <canvas id="myCanvas" width="400" height="350"></canvas>
 
+  <!-- Mocha needs a div with an id of mocha to display the test results -->
   <div id="mocha"></div>
 
+  <!-- Add the mocha, sinon, and chai scripts -->
   <script src="https://unpkg.com/chai/chai.js"></script>
   <script src="https://unpkg.com/mocha/mocha.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sinon@9/pkg/sinon.js"></script>
 
+  <!-- Define the setup for the mocha tests -->
   <script>mocha.setup('bdd')</script>
 
+  <!-- Add the script that contains our tests -->
   <script type="module" src="./gameguard.client.test.js"></script>
 
+  <!-- Finally we run the tests -->
   <script type="module">
     mocha.checkLeaks();
     mocha.run();
   </script>
 </body>
+
 </html>
-
-
