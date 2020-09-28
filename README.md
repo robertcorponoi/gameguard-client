@@ -22,7 +22,7 @@ The client-side companion to the [GameGuard](https://github.com/robertcorponoi/g
 
 ## **Table of Contents**
 
-- [Initialization](#initialization)
+- [Installation](#installation)
 - [Usage](#usage)
 - [How It Works](#how-it-works)
 - [Properties](#properties)
